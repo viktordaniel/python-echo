@@ -1,0 +1,17 @@
+name: publish
+on: [push]
+jobs:
+publish-python-echo-image:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v2
+- name: Login to GitHub Container Registry
+uses: docker/login-action@v1
+with:
+registry: ghcr.io
+username: ${{ github.actor }}
+password: ${{ secrets.GITHUB_TOKEN }}
+- name: Build the python-echo Docker image
+run: |
+       docker build . --tag ghcr.io/viktordaniel/python-echo:latest
+       docker push ghcr.io/viktordaniel/python-echo:latest
